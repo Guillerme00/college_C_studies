@@ -1,53 +1,78 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-void clear_screen()
-{
-#ifdef __WIN32
-    system("cls");
-#else
-    system("clear");
-#endif
-};
-
-int main()
+int main(void)
 {
     int current_money = 520;
-    int choise = 0;
-    int withdrawal = 0;
-    int deposit = 0;
-    char confirmation = "";
+    int choice = 0;
+    int amount = 0;
 
     while (1)
     {
-        printf("Ola, escolha a opção desejada");
-        printf("1 -) Conferir saldo atual");
-        printf("2 -) Fazer um Saque");
-        printf("3 -) Fazer um Deposito");
-        printf("4 -) Sair");
-        printf("Insira o numero da opção desejada");
-        scanf("d%", &choise);
+        printf("\nOla! Escolha uma opcao:\n");
+        printf("1 - Conferir saldo atual\n");
+        printf("2 - Fazer um saque\n");
+        printf("3 - Fazer um deposito\n");
+        printf("4 - Sair\n");
+        printf("Opcao: ");
 
-        switch (choise)
+        if (scanf("%d", &choice) != 1)
         {
+            printf("Entrada invalida. Digite um numero.\n");
+            return 1;
+        }
+
+        switch (choice)
+        {
+        // Case 1
         case 1:
-            printf("Voce tem em conta atualmente" + current_money);
-            clear_screen();
+            printf("Voce tem %d em conta.\n", current_money);
             break;
+
+
+        // Case 2
         case 2:
-            if (withdrawal <= current_money)
+            printf("Valor do saque: ");
+            if (scanf("%d", &amount) != 1 || amount <= 0)
             {
-                current_money -= withdrawal;
-                printf("Saque concluido com sucesso");
-                clear_screen();
-                break;
+                printf("Valor invalido. Digite um valor positivo.\n");
+                return 1;
+            }
+            if (amount <= current_money)
+            {
+                current_money -= amount;
+                printf("Saque concluido. Saldo atual: %d\n", current_money);
             }
             else
             {
-                printf("Erro, saldo insuficiente");
-                clear_screen();
-                break;
+                printf("Saldo insuficiente.\n");
             }
+            break;
+
+        
+        // Case 3
+        case 3:
+            printf("Valor do deposito: ");
+            if (scanf("%d", &amount) != 1 || amount <= 0)
+            {
+                printf("Valor invalido. Digite um valor positivo.\n");
+                return 1;
+            }
+            current_money += amount;
+            printf("Deposito concluido. Saldo atual: %d\n", current_money);
+            break;
+
+
+        // Case 4
+        case 4:
+            printf("Programa encerrado. Obrigado!\n");
+            return 0;
+
+        
+        // Prevencao de erros
+        default:
+            printf("Opcao invalida. Escolha um numero de 1 a 4.\n");
+            break;
         }
     }
 }
